@@ -1,0 +1,24 @@
+# ---------- 原始数据（91MB，不纳入版本库）----------
+# 下载方式见 README「二、数据说明」
+data/online_retail_II.csv
+
+# ---------- Excel / Office 锁文件 ----------
+# Excel 打开 .xlsx 时会生成 ~$xxx.xlsx，关闭后自动消失
+~$*
+*.tmp
+
+# ---------- 系统文件 ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------- 编辑器 ----------
+.vscode/
+.idea/
+
+# ---------- 说明 ----------
+# 以下内容【要】纳入版本库，故不排除：
+#   data/sample_100k.csv        10 万行抽样（8.8MB，可复现）
+#   data/exports/*.csv          10 个分析结果集（体积小，Tableau 依赖）
+#   tableau/*.twbx              看板（数据已打包）
+#   EXCEL/*.xlsx                不含锁文件，可正常入库

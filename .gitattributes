@@ -1,0 +1,31 @@
+# ============================================================
+# .gitattributes —— 控制 Git 对不同文件类型的处理方式
+# ============================================================
+# 本机 system 级设置了 core.autocrlf=true（提交时 CRLF→LF，拉取时 LF→CRLF）。
+# 这对代码没影响，但有三个副作用必须显式锁住：
+#   1) CSV 是【数据文件】，换行符被改写等于改数据 —— 本项目的源文件实测为 LF
+#   2) 二进制文件（xlsx / png / twbx）绝不能被当文本处理
+#   3) SQL 与文档统一 LF，避免不同平台拉取后 diff 满屏
+# ============================================================
+
+# 默认：Git 自行判断文本 / 二进制，文本统一存为 LF
+* text=auto
+
+# ---------- 数据文件：一个字节都不许动 ----------
+# 本项目所有 CSV 均为 LF 换行，且 LOAD DATA 用的是 LINES TERMINATED BY '\n'
+*.csv   -text
+*.tsv   -text
+
+# ---------- 代码与文档：仓库内统一 LF ----------
+*.sql   text eol=lf
+*.md    text eol=lf
+*.twb   text eol=lf
+
+# ---------- 二进制：不做任何转换 ----------
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.xlsx  binary
+*.docx  binary
+*.pdf   binary
+*.twbx  binary
