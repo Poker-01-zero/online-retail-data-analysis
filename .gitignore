@@ -16,6 +16,15 @@ desktop.ini
 .vscode/
 .idea/
 
+# Python / Agent 本地配置、查询快照与调用记录
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+agent/data/
+agent/traces/
+
 # ---------- 说明 ----------
 # 以下内容【要】纳入版本库，故不排除：
 #   data/sample_100k.csv        10 万行抽样（8.8MB，可复现）

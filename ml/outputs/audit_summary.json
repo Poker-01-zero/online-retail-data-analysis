@@ -1,0 +1,67 @@
+{
+  "full": {
+    "removed": 6067,
+    "remaining": 997146,
+    "revenue": 19092681.79,
+    "customers": 5839,
+    "sql_row_difference": 598,
+    "sql_revenue_difference": 10342.06
+  },
+  "windows": {
+    "T0": {
+      "n": 4229,
+      "pos_rate": 0.3317569165287302,
+      "future_cancel_rows": 775,
+      "affected_customers": 280,
+      "historical_rows": 480709,
+      "pct_history": 0.16122019766636364
+    },
+    "W1": {
+      "n": 4502,
+      "pos_rate": 0.35117725455353177,
+      "future_cancel_rows": 576,
+      "affected_customers": 219,
+      "historical_rows": 582168,
+      "pct_history": 0.09894051201714969
+    },
+    "W2": {
+      "n": 4899,
+      "pos_rate": 0.3298632373953868,
+      "future_cancel_rows": 558,
+      "affected_customers": 213,
+      "historical_rows": 681929,
+      "pct_history": 0.08182670043362286
+    },
+    "W3": {
+      "n": 5216,
+      "pos_rate": 0.4281058282208589,
+      "future_cancel_rows": 412,
+      "affected_customers": 158,
+      "historical_rows": 789736,
+      "pct_history": 0.052169332536442556
+    }
+  },
+  "segments": {
+    "0.2": {
+      "n": 1043,
+      "rate": 0.5378715244487057,
+      "historical_value": 4507.660757430489,
+      "revenue": 722.5522722914669,
+      "buyer_revenue": 1343.354759358289
+    },
+    "0.3": {
+      "n": 1565,
+      "rate": 0.531629392971246,
+      "historical_value": 3877.346932907348,
+      "revenue": 635.2276421725239,
+      "buyer_revenue": 1194.8693028846153
+    },
+    "0.5": {
+      "n": 2608,
+      "rate": 0.5337423312883436,
+      "historical_value": 3205.9503680981597,
+      "revenue": 597.4859662576688,
+      "buyer_revenue": 1119.4277298850575
+    }
+  }
+}
