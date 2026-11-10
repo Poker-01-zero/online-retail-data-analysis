@@ -1,0 +1,8 @@
+{
+  "test": "isolated_distribution",
+  "build_without_raw_csv": true,
+  "only_exported_files_used": 7,
+  "missing_key_fails_clearly": true,
+  "no_author_key_copied": true,
+  "stage": "D:\\Work\\tmp\\retail_acceptance_7i0itt0d"
+}

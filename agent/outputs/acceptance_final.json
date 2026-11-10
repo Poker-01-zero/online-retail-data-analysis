@@ -1,0 +1,513 @@
+{
+  "evaluated_at_utc": "2026-11-10T11:23:40.506895+00:00",
+  "model": "deepseek-flash",
+  "suite": "eval_acceptance",
+  "count": 6,
+  "passed": 6,
+  "pass_rate": 1.0,
+  "median_seconds": 2.1135,
+  "p95_seconds": 2.675,
+  "grading": "状态/成功工具/部分参数/指定数字与边界关键词；非完整语义或因果正确性证明，未使用LLM裁判",
+  "results": [
+    {
+      "id": "new_quarter",
+      "question": "汇总2010年7月至9月的营收与加权客单价。",
+      "passed": true,
+      "failures": [],
+      "result": {
+        "status": "answered",
+        "answer": "2010年7月至9月（三个月均为完整月，SQL历史口径，全部国家含匿名订单，GBP）：合计营收 2,126,920.42 GBP，发票订单数 4,647 单，加权AOV 457.70 GBP。分月：7月营收 618,141.50 GBP、1,487单、AOV 415.70 GBP；8月营收 655,596.76 GBP、1,393单、AOV 470.64 GBP；9月营收 853,182.16 GBP、1,767单、AOV 482.84 GBP。加权AOV为区间合计营收除以合计订单数，非各月AOV简单平均。",
+        "sources": [
+          "data/exports/01_月度趋势.csv"
+        ],
+        "trace": [
+          {
+            "tool": "monthly_metrics",
+            "arguments": {
+              "start_month": "2010-07",
+              "end_month": "2010-09"
+            },
+            "result": {
+              "ok": true,
+              "data": {
+                "start_month": "2010-07",
+                "end_month": "2010-09",
+                "totals": {
+                  "revenue_gbp": 2126920.42,
+                  "orders": 4647,
+                  "aov_gbp": 457.7
+                },
+                "months": [
+                  {
+                    "月份": "2010-07",
+                    "月份日期": "2010-07-01",
+                    "订单数": "1487",
+                    "营收": "618141.50",
+                    "AOV": "415.70",
+                    "是否完整月": "1"
+                  },
+                  {
+                    "月份": "2010-08",
+                    "月份日期": "2010-08-01",
+                    "订单数": "1393",
+                    "营收": "655596.76",
+                    "AOV": "470.64",
+                    "是否完整月": "1"
+                  },
+                  {
+                    "月份": "2010-09",
+                    "月份日期": "2010-09-01",
+                    "订单数": "1767",
+                    "营收": "853182.16",
+                    "AOV": "482.84",
+                    "是否完整月": "1"
+                  }
+                ]
+              },
+              "sources": [
+                {
+                  "source": "data/exports/01_月度趋势.csv",
+                  "sha256": "c7be9c86a9fab9d95b745d7d347984960ed9f736f455388e9dc1c31f5090ede0",
+                  "rows": 25
+                }
+              ],
+              "scope": "SQL历史口径；全部国家，含匿名订单；发票订单数；GBP",
+              "warnings": []
+            }
+          }
+        ],
+        "elapsed_seconds": 2.675,
+        "usage": [
+          {
+            "prompt_tokens": 1566,
+            "completion_tokens": 63,
+            "total_tokens": 1629,
+            "prompt_tokens_details": {
+              "cached_tokens": 1408
+            },
+            "prompt_cache_hit_tokens": 1408,
+            "prompt_cache_miss_tokens": 158
+          },
+          {
+            "prompt_tokens": 1972,
+            "completion_tokens": 160,
+            "total_tokens": 2132,
+            "prompt_tokens_details": {
+              "cached_tokens": 1792
+            },
+            "prompt_cache_hit_tokens": 1792,
+            "prompt_cache_miss_tokens": 180
+          }
+        ]
+      }
+    },
+    {
+      "id": "annual_rfm_not_available",
+      "question": "请单独列2011年的RFM客户类型人数，不要用全期数据替代。",
+      "passed": true,
+      "failures": [],
+      "result": {
+        "status": "unsupported",
+        "answer": "无法单独提供2011年的RFM客户类型人数。现有RFM分层工具只提供2009-12至2011-12的全期汇总，不支持按年份（或国家）筛选；按你的要求，我没有用全期数据替代。若可以接受，我可以改为提供全期RFM分层人数，请确认是否查看。",
+        "sources": [
+          "agent/tools.py（项目口径字典）"
+        ],
+        "trace": [
+          {
+            "tool": "segment_summary",
+            "arguments": {
+              "kind": "rfm"
+            },
+            "result": {
+              "ok": false,
+              "error": {
+                "code": "unsupported_scope",
+                "message": "分层工具只有全期汇总，不能按年份筛选。用户未接受全期替代，不返回全期人数；说明不支持并等待用户确认。"
+              }
+            }
+          },
+          {
+            "tool": "metric_definition",
+            "arguments": {
+              "topic": "limitations"
+            },
+            "result": {
+              "ok": true,
+              "data": {
+                "topic": "limitations",
+                "definition": "本助手仅支持2009-12至2011-12的已有离线月度汇总（2011-12仅到12月9日）、全期RFM/ABC/帕累托、三窗口ML评估和2011-08-31名单。无利润/进货成本/库存/营销干预/联系方式/实时数据；导出汇总无国家筛选。不能计算这些缺失指标、发送券、删除或更新数据，也不能执行任意SQL/代码。年份、同比区间或名单排序不清时先澄清。"
+              },
+              "sources": [],
+              "scope": "项目口径字典；定义为维护的说明，非新增实测结论",
+              "warnings": []
+            }
+          }
+        ],
+        "elapsed_seconds": 2.044,
+        "usage": [
+          {
+            "prompt_tokens": 1571,
+            "completion_tokens": 69,
+            "total_tokens": 1640,
+            "prompt_tokens_details": {
+              "cached_tokens": 1408
+            },
+            "prompt_cache_hit_tokens": 1408,
+            "prompt_cache_miss_tokens": 163
+          },
+          {
+            "prompt_tokens": 1870,
+            "completion_tokens": 80,
+            "total_tokens": 1950,
+            "prompt_tokens_details": {
+              "cached_tokens": 1536
+            },
+            "prompt_cache_hit_tokens": 1536,
+            "prompt_cache_miss_tokens": 334
+          }
+        ]
+      }
+    },
+    {
+      "id": "full_december_not_available",
+      "question": "我要2011年12月完整整月的销售额。",
+      "passed": true,
+      "failures": [],
+      "result": {
+        "status": "clarify",
+        "answer": "无法提供2011年12月的完整整月销售额：现有离线数据中2011-12只记录到12月9日，不是完整月份，因此不存在完整整月口径的数值。可选方案：①查看2011-12已记录部分（截至12月9日）的销售额；②改看2011年1-11月等完整月份区间。请确认采用哪一种。",
+        "sources": [
+          "agent/tools.py（项目口径字典）"
+        ],
+        "trace": [
+          {
+            "tool": "metric_definition",
+            "arguments": {
+              "topic": "limitations"
+            },
+            "result": {
+              "ok": true,
+              "data": {
+                "topic": "limitations",
+                "definition": "本助手仅支持2009-12至2011-12的已有离线月度汇总（2011-12仅到12月9日）、全期RFM/ABC/帕累托、三窗口ML评估和2011-08-31名单。无利润/进货成本/库存/营销干预/联系方式/实时数据；导出汇总无国家筛选。不能计算这些缺失指标、发送券、删除或更新数据，也不能执行任意SQL/代码。年份、同比区间或名单排序不清时先澄清。"
+              },
+              "sources": [],
+              "scope": "项目口径字典；定义为维护的说明，非新增实测结论",
+              "warnings": []
+            }
+          }
+        ],
+        "elapsed_seconds": 2.387,
+        "usage": [
+          {
+            "prompt_tokens": 1563,
+            "completion_tokens": 39,
+            "total_tokens": 1602,
+            "prompt_tokens_details": {
+              "cached_tokens": 1408
+            },
+            "prompt_cache_hit_tokens": 1408,
+            "prompt_cache_miss_tokens": 155
+          },
+          {
+            "prompt_tokens": 1771,
+            "completion_tokens": 92,
+            "total_tokens": 1863,
+            "prompt_tokens_details": {
+              "cached_tokens": 1536
+            },
+            "prompt_cache_hit_tokens": 1536,
+            "prompt_cache_miss_tokens": 235
+          }
+        ]
+      }
+    },
+    {
+      "id": "coupon_effect_unidentified",
+      "question": "按候选优先级选客户，每人发5英镑券，能多带来多少订单？",
+      "passed": true,
+      "failures": [],
+      "result": {
+        "status": "unsupported",
+        "answer": "无法给出“每人5英镑券能多带来多少订单”的增量数字。原因：项目数据中没有营销干预与对照组记录，也没有券成本、利润字段，因此任何发券增量订单都无法从历史数据估算；候选优先级=历史消费金额M×(1−90天复购概率)，只是启发式实验池排序，尚未验证触达收益，排序本身不能证明发券有效，90天未复购也不等于永久流失。可参考的验证方案（尚未开展）：取候选优先级前30%共1565人，783人发券、782人同样触达但不发券，比较90天复购率与全组人均营收差值；两组都触达，测的是券的增量而非“联系 vs 不联系”的增量。另外名单仅有2011-08-31历史观察点，不是今日名单，也无国家维度。如需要，我可以先按priority或probability列出该历史观察点的候选名单供实验分组使用。",
+        "sources": [
+          "agent/tools.py（项目口径字典）"
+        ],
+        "trace": [
+          {
+            "tool": "metric_definition",
+            "arguments": {
+              "topic": "candidate"
+            },
+            "result": {
+              "ok": true,
+              "data": {
+                "topic": "candidate",
+                "definition": "候选优先级=历史消费金额M×(1−90天复购概率)，属启发式实验池；排序尚未验证触达收益，不代表永久流失。仅有2011-08-31历史名单。"
+              },
+              "sources": [],
+              "scope": "项目口径字典；定义为维护的说明，非新增实测结论",
+              "warnings": []
+            }
+          },
+          {
+            "tool": "metric_definition",
+            "arguments": {
+              "topic": "causality"
+            },
+            "result": {
+              "ok": true,
+              "data": {
+                "topic": "causality",
+                "definition": "无营销干预与对照数据，AUC和名单命中率不能证明发券有效。拟议实验：候选优先级前30% 1565人，783发券、782同样触达不发券；比较90天复购率与全组人均营收差值。实验尚未开展。两组均触达测的是券的增量，不是联系相对不联系的增量。"
+              },
+              "sources": [],
+              "scope": "项目口径字典；定义为维护的说明，非新增实测结论",
+              "warnings": []
+            }
+          }
+        ],
+        "elapsed_seconds": 2.183,
+        "usage": [
+          {
+            "prompt_tokens": 1570,
+            "completion_tokens": 79,
+            "total_tokens": 1649,
+            "prompt_tokens_details": {
+              "cached_tokens": 1408
+            },
+            "prompt_cache_hit_tokens": 1408,
+            "prompt_cache_miss_tokens": 162
+          },
+          {
+            "prompt_tokens": 1887,
+            "completion_tokens": 213,
+            "total_tokens": 2100,
+            "prompt_tokens_details": {
+              "cached_tokens": 1536
+            },
+            "prompt_cache_hit_tokens": 1536,
+            "prompt_cache_miss_tokens": 351
+          }
+        ]
+      }
+    },
+    {
+      "id": "change_period_in_history",
+      "question": "那2010年5月的营收呢？",
+      "passed": true,
+      "failures": [],
+      "result": {
+        "status": "answered",
+        "answer": "2010年5月营收为623,453.02 GBP，发票订单数1,469笔，加权AOV为424.41 GBP。该数据来自SQL历史口径，覆盖全部国家（含匿名订单），且为完整月份。",
+        "sources": [
+          "data/exports/01_月度趋势.csv"
+        ],
+        "trace": [
+          {
+            "tool": "monthly_metrics",
+            "arguments": {
+              "start_month": "2010-05",
+              "end_month": "2010-05"
+            },
+            "result": {
+              "ok": true,
+              "data": {
+                "start_month": "2010-05",
+                "end_month": "2010-05",
+                "totals": {
+                  "revenue_gbp": 623453.02,
+                  "orders": 1469,
+                  "aov_gbp": 424.41
+                },
+                "months": [
+                  {
+                    "月份": "2010-05",
+                    "月份日期": "2010-05-01",
+                    "订单数": "1469",
+                    "营收": "623453.02",
+                    "AOV": "424.41",
+                    "是否完整月": "1"
+                  }
+                ]
+              },
+              "sources": [
+                {
+                  "source": "data/exports/01_月度趋势.csv",
+                  "sha256": "c7be9c86a9fab9d95b745d7d347984960ed9f736f455388e9dc1c31f5090ede0",
+                  "rows": 25
+                }
+              ],
+              "scope": "SQL历史口径；全部国家，含匿名订单；发票订单数；GBP",
+              "warnings": []
+            }
+          }
+        ],
+        "elapsed_seconds": 1.451,
+        "usage": [
+          {
+            "prompt_tokens": 1585,
+            "completion_tokens": 63,
+            "total_tokens": 1648,
+            "prompt_tokens_details": {
+              "cached_tokens": 1408
+            },
+            "prompt_cache_hit_tokens": 1408,
+            "prompt_cache_miss_tokens": 177
+          },
+          {
+            "prompt_tokens": 1880,
+            "completion_tokens": 59,
+            "total_tokens": 1939,
+            "prompt_tokens_details": {
+              "cached_tokens": 1664
+            },
+            "prompt_cache_hit_tokens": 1664,
+            "prompt_cache_miss_tokens": 216
+          }
+        ]
+      }
+    },
+    {
+      "id": "w2_models",
+      "question": "W2窗口逻辑回归和随机森林的AUC各是多少？",
+      "passed": true,
+      "failures": [],
+      "result": {
+        "status": "answered",
+        "answer": "W2窗口（离线滚动验证）测试集4899人、正样本率0.3299、训练集8731人：逻辑回归AUC=0.8151，随机森林AUC=0.8147，两者几乎持平。注意AUC不等于准确率，且未评估概率校准；按复购概率排序的提升度不代表发券增量或因果效果。",
+        "sources": [
+          "ml/outputs/lift_table.csv",
+          "ml/outputs/metrics.csv"
+        ],
+        "trace": [
+          {
+            "tool": "model_report",
+            "arguments": {
+              "window": "W2"
+            },
+            "result": {
+              "ok": true,
+              "data": {
+                "metrics": [
+                  {
+                    "window": "W2",
+                    "model": "逻辑回归",
+                    "auc": "0.8151",
+                    "n_train": "8731",
+                    "n_test": "4899",
+                    "pos_rate": "0.3299"
+                  },
+                  {
+                    "window": "W2",
+                    "model": "随机森林",
+                    "auc": "0.8147",
+                    "n_train": "8731",
+                    "n_test": "4899",
+                    "pos_rate": "0.3299"
+                  }
+                ],
+                "lift_by_probability": [
+                  {
+                    "window": "W2",
+                    "名单比例": "0.01",
+                    "人数": "49",
+                    "命中人数": "48",
+                    "命中率": "0.9796",
+                    "提升度": "2.97",
+                    "覆盖复购客户": "0.0297"
+                  },
+                  {
+                    "window": "W2",
+                    "名单比例": "0.05",
+                    "人数": "245",
+                    "命中人数": "227",
+                    "命中率": "0.9265",
+                    "提升度": "2.809",
+                    "覆盖复购客户": "0.1405"
+                  },
+                  {
+                    "window": "W2",
+                    "名单比例": "0.1",
+                    "人数": "490",
+                    "命中人数": "420",
+                    "命中率": "0.8571",
+                    "提升度": "2.598",
+                    "覆盖复购客户": "0.2599"
+                  },
+                  {
+                    "window": "W2",
+                    "名单比例": "0.2",
+                    "人数": "980",
+                    "命中人数": "734",
+                    "命中率": "0.749",
+                    "提升度": "2.271",
+                    "覆盖复购客户": "0.4542"
+                  },
+                  {
+                    "window": "W2",
+                    "名单比例": "0.3",
+                    "人数": "1470",
+                    "命中人数": "975",
+                    "命中率": "0.6633",
+                    "提升度": "2.011",
+                    "覆盖复购客户": "0.6033"
+                  },
+                  {
+                    "window": "W2",
+                    "名单比例": "0.5",
+                    "人数": "2450",
+                    "命中人数": "1312",
+                    "命中率": "0.5355",
+                    "提升度": "1.623",
+                    "覆盖复购客户": "0.8119"
+                  }
+                ],
+                "lr_mean_auc": 0.8151
+              },
+              "sources": [
+                {
+                  "source": "ml/outputs/metrics.csv",
+                  "sha256": "43bb62134b061011233281194cad7415944ec2bfeccc921711e52489a01c4bfb",
+                  "rows": 6
+                },
+                {
+                  "source": "ml/outputs/lift_table.csv",
+                  "sha256": "857710fa7c5f87a40de4801d0d2013636fd9ead5707f8d1d5279c9514046b740",
+                  "rows": 18
+                }
+              ],
+              "scope": "离线滚动验证W1/W2/W3；概率名单评估",
+              "warnings": [
+                "AUC不等于准确率；未评估概率校准；提升度不代表发券增量"
+              ]
+            }
+          }
+        ],
+        "elapsed_seconds": 1.448,
+        "usage": [
+          {
+            "prompt_tokens": 1566,
+            "completion_tokens": 38,
+            "total_tokens": 1604,
+            "prompt_tokens_details": {
+              "cached_tokens": 1408
+            },
+            "prompt_cache_hit_tokens": 1408,
+            "prompt_cache_miss_tokens": 158
+          },
+          {
+            "prompt_tokens": 2270,
+            "completion_tokens": 88,
+            "total_tokens": 2358,
+            "prompt_tokens_details": {
+              "cached_tokens": 2048
+            },
+            "prompt_cache_hit_tokens": 2048,
+            "prompt_cache_miss_tokens": 222
+          }
+        ]
+      }
+    }
+  ]
+}

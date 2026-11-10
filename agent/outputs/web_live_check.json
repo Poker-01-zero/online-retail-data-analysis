@@ -1,0 +1,15 @@
+{
+  "tested_at_utc": "2026-11-10T11:07:23.684Z",
+  "mode": "live-browser-to-local-server-to-deepseek",
+  "questions": 2,
+  "passed": 2,
+  "conversation": true,
+  "sources_present": true,
+  "customer_order_verified": true,
+  "browser_credentials_absent": true,
+  "javascript_errors": 0,
+  "latencies_seconds": [
+    2.731,
+    2.861
+  ]
+}

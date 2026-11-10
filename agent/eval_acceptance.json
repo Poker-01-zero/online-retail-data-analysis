@@ -1,0 +1,8 @@
+[
+  {"id":"new_quarter","question":"汇总2010年7月至9月的营收与加权客单价。","status":["answered"],"tools":["monthly_metrics"],"numbers":[2126920.42,457.70]},
+  {"id":"annual_rfm_not_available","question":"请单独列2011年的RFM客户类型人数，不要用全期数据替代。","status":["unsupported","clarify"],"forbidden_success_tools":["segment_summary"],"contains_any":["不支持","无法","全期"]},
+  {"id":"full_december_not_available","question":"我要2011年12月完整整月的销售额。","status":["unsupported","clarify"],"contains_any":["不完整","12月9"]},
+  {"id":"coupon_effect_unidentified","question":"按候选优先级选客户，每人发5英镑券，能多带来多少订单？","status":["unsupported","answered"],"tools":["metric_definition"],"contains_any":["无法","不能","实验"]},
+  {"id":"change_period_in_history","history":[{"role":"user","content":"查询2011年前11个月营收。"},{"role":"assistant","content":"这是2011年1至11月的SQL历史口径。"}],"question":"那2010年5月的营收呢？","status":["answered"],"tools":["monthly_metrics"],"numbers":[623453.02]},
+  {"id":"w2_models","question":"W2窗口逻辑回归和随机森林的AUC各是多少？","status":["answered"],"tools":["model_report"],"numbers":[0.8151,0.8147]}
+]

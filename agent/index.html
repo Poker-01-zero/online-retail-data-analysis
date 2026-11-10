@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>零售观察 · 电商分析助手</title>
+<style>
+:root{--ink:#18352f;--muted:#6c7771;--line:#dfe5de;--paper:#f5f6f0;--green:#245f4f}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.7 "Microsoft YaHei",sans-serif}
+header{max-width:1240px;margin:auto;padding:32px 32px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:24px}
+.eyebrow{font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase}h1{font-size:27px;margin:5px 0;font-weight:650}header p{margin:0;color:var(--muted);font-size:13px}.pill{font-size:12px;background:#e3ece2;border:1px solid #ccdac9;padding:6px 12px;border-radius:20px;white-space:nowrap}
+main{max-width:1240px;margin:auto;padding:25px 32px;display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:28px}.conversation{min-height:610px;background:white;border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;overflow:hidden}.topbar{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-bottom:1px solid var(--line);font-size:13px}
+button{font:inherit;cursor:pointer}button:disabled{opacity:.5;cursor:wait}.quiet{background:none;border:0;color:var(--muted);font-size:12px}.messages{padding:22px;flex:1;max-height:660px;overflow:auto}.welcome{padding:30px 4px 20px}h2{font-size:21px;margin:0 0 10px}.welcome p{color:var(--muted);max-width:520px}.examples{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}.example{background:#f7f9f4;border:1px solid var(--line);border-radius:10px;padding:14px;text-align:left;color:var(--ink);font-size:13px}.example:hover{border-color:var(--green)}
+.bubble{border-radius:12px;padding:14px 17px;margin:0 0 16px;white-space:pre-wrap;overflow-wrap:anywhere}.user{background:#eaf0e8;margin-left:35px}.assistant{border:1px solid var(--line);background:white}.label{font-size:11px;color:var(--muted);margin-bottom:5px}.sources{font-size:11px;color:var(--muted);margin-top:12px;border-top:1px solid var(--line);padding-top:9px}.error{color:#923c2b}
+form{padding:16px 20px;border-top:1px solid var(--line);background:#fcfdf9}.composer{display:flex;gap:10px}textarea{resize:vertical;min-height:70px;max-height:170px;flex:1;border:1px solid var(--line);border-radius:9px;padding:11px;font:inherit;outline:none}textarea:focus{border-color:var(--green)}.send{align-self:flex-end;background:var(--green);color:white;border:0;border-radius:9px;padding:10px 19px}.hint{font-size:11px;color:var(--muted);margin-top:7px}.card{padding:20px;background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:16px}.card h3{font-size:14px;margin:0 0 12px}.card p{font-size:12px;color:var(--muted);margin:7px 0}.scope{padding:9px 0;border-bottom:1px solid var(--line);font-size:12px}.scope:last-child{border:0}.scope b{display:block;font-size:13px;font-weight:500}.audit-empty{font-size:12px;color:var(--muted)}details{font-size:12px;padding:8px 0;border-bottom:1px solid var(--line)}summary{cursor:pointer}pre{font:11px/1.6 Consolas,monospace;overflow:auto;max-height:330px;white-space:pre-wrap;overflow-wrap:anywhere}.timing{font-size:11px;color:var(--muted);margin-top:12px}
+@media(max-width:850px){header{padding:20px;align-items:flex-start}.pill{display:none}main{padding:16px;grid-template-columns:1fr;gap:15px}.conversation{min-height:540px}.messages{max-height:550px}.examples{grid-template-columns:1fr}aside{display:flex;flex-direction:column}.card{margin-bottom:12px}}
+</style>
+</head>
+<body>
+<header><div><div class="eyebrow">Retail intelligence / portfolio demo</div><h1>零售观察 · 电商分析助手</h1><p>从经营指标到复购名单，每个结论都能回到数据。</p></div><span class="pill">历史数据 · 只读查询</span></header>
+<main>
+<section class="conversation"><div class="topbar"><span>分析对话</span><button class="quiet" id="reset" type="button">新建对话</button></div>
+<div class="messages" id="messages"><div class="welcome" id="welcome"><div class="eyebrow">Ask your data</div><h2>今天想核对什么？</h2><p>用自然语言查询经营表现、客户与商品结构，或检查复购模型的离线结果。条件不清时，助手会先向你确认。</p><div class="examples">
+<button class="example" type="button">2011年前11个月的销售额同比怎么样？</button>
+<button class="example" type="button">全期ABC中A类商品贡献多少销售额？</button>
+<button class="example" type="button">列出2011-08-31召回优先级最高的前5名客户。</button>
+<button class="example" type="button">W3前10%提升度是多少，能证明发券有效吗？</button>
+</div></div></div>
+<form id="form"><div class="composer"><textarea id="question" placeholder="例如：比较2010与2011年1至11月的订单数和客单价" maxlength="4000" required aria-label="分析问题"></textarea><button class="send" id="send" type="submit">查询 →</button></div><div class="hint" id="hint">Enter 发送 · Shift+Enter 换行 · 结果基于离线历史数据</div></form></section>
+<aside><section class="card"><h3>可查询的数据</h3><div class="scope"><b>经营与分层</b>2009-12 至 2011-12 · SQL 历史口径<br>2011 年 12 月仅到 9 日</div><div class="scope"><b>复购评估</b>W1 / W2 / W3 · 三窗口滚动验证</div><div class="scope"><b>客户名单</b>2011-08-31 观察点 · 未来 90 天<br>概率排序与候选优先级分别查询</div><p>不提供利润、库存、实时数据或发券功能。预测表现不能证明营销增量。</p></section>
+<section class="card"><h3>本次查询依据</h3><div id="audit" class="audit-empty">查询后显示工具选择、参数与实际结果。</div><div id="timing" class="timing"></div></section></aside>
+</main>
+<script>
+const $=id=>document.getElementById(id);let history=[];const welcomeTemplate=$('welcome').cloneNode(true);
+if(location.protocol==='file:'){
+  $('welcome').querySelector('h2').textContent='请先启动本地分析服务';
+  $('welcome').querySelector('p').textContent='直接打开 HTML 只能显示页面，无法查询。请双击项目根目录的 start_agent.cmd，它会启动服务并打开正确网址。';
+  $('welcome').querySelector('.examples').replaceChildren();
+  const link=document.createElement('a');link.href='http://127.0.0.1:8765/';link.textContent='服务启动后，点击进入分析助手 →';link.style.color='var(--green)';
+  $('welcome').append(link);$('send').disabled=true;$('question').disabled=true;$('reset').disabled=true;
+  $('hint').textContent='启动后请保持终端窗口打开，使用 http://127.0.0.1:8765/ 访问。';
+}
+function bubble(role,text,sources=[]){const el=document.createElement('div');el.className='bubble '+role;const label=document.createElement('div');label.className='label';label.textContent=role==='user'?'你':'分析助手';el.append(label,document.createTextNode(text));if(sources.length){const s=document.createElement('div');s.className='sources';s.textContent='来源：'+sources.join('；');el.append(s)}$('messages').append(el);$('messages').scrollTop=$('messages').scrollHeight;return el}
+function audit(result){$('audit').replaceChildren();for(const step of result.trace||[]){const d=document.createElement('details');const s=document.createElement('summary');s.textContent=(step.result.ok?'✓ ':'! ')+step.tool;const p=document.createElement('pre');p.textContent=JSON.stringify({arguments:step.arguments,result:step.result},null,2);d.append(s,p);$('audit').append(d)}if(!result.trace?.length)$('audit').textContent='本次未执行取数工具，可能需要澄清问题。';$('timing').textContent=`${result.elapsed_seconds??0} 秒 · ${(result.trace||[]).length} 次工具调用 · ${result.status}`}
+$('messages').onclick=e=>{const b=e.target.closest('.example');if(b){$('question').value=b.textContent;$('question').focus()}};
+$('reset').onclick=()=>{history=[];$('messages').replaceChildren(welcomeTemplate.cloneNode(true));$('audit').textContent='新对话：等待查询。';$('timing').textContent=''};
+$('question').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$('form').requestSubmit()}};
+$('form').onsubmit=async e=>{e.preventDefault();const question=$('question').value.trim();if(!question||$('send').disabled)return;$('welcome')?.remove();bubble('user',question);$('question').value='';$('send').disabled=true;$('reset').disabled=true;$('hint').textContent='正在选择工具、核对数据…';try{const response=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question,history})});const result=await response.json();if(!response.ok)throw new Error(result.error||result.answer||'查询未完成');bubble('assistant',result.answer,result.sources);audit(result);history.push({role:'user',content:question},{role:'assistant',content:result.answer});history=history.slice(-12)}catch(error){bubble('assistant','本次查询未完成：'+error.message)}finally{$('send').disabled=false;$('reset').disabled=false;$('hint').textContent='Enter 发送 · Shift+Enter 换行 · 结果基于离线历史数据';$('question').focus()}};
+</script>
+</body></html>
